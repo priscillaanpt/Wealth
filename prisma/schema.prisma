@@ -14,18 +14,6 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    createdBy   User   @relation(fields: [createdById], references: [id])
-    createdById String
-
-    @@index([name])
-}
-
 // Necessary for Next auth
 model Account {
     id                       String  @id @default(cuid())
@@ -46,29 +34,282 @@ model Account {
     @@unique([provider, providerAccountId])
 }
 
-model Session {
-    id           String   @id @default(cuid())
-    sessionToken String   @unique
-    userId       String
-    expires      DateTime
-    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+enum TokenType {
+    EMAIL_VERIFICATION
+    PASSWORD_RESET
+}
+
+model VerificationToken {
+    id        Int       @id @default(autoincrement())
+    token     String    @unique
+    type      TokenType
+    expires   DateTime
+    createdAt DateTime  @default(now())
+
+    userId String
+    user   User   @relation("UserToken", fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
     id            String    @id @default(cuid())
     name          String?
     email         String?   @unique
+    newEmail      String?
+    password_hash String?
     emailVerified DateTime?
     image         String?
+    createdAt     DateTime  @default(now())
+    updatedAt     DateTime  @updatedAt
+
+    personalInfo  PersonalInfo?       @relation("UserPersonalInfo")
+    financialInfo FinancialInfo?      @relation("UserFinancialInfo")
+    income        PersonalIncome?     @relation("UserPersonalIncome")
+    expense       PersonalExpense?    @relation("UserPersonalExpense")
+    tokens        VerificationToken[] @relation("UserToken")
     accounts      Account[]
-    sessions      Session[]
-    posts         Post[]
+
+    financialAccounts UserFinancialAccount[] @relation("UserFinancialAccount")
+
+    HealthPlan    HealthPlan[]
+    EducationPlan EducationPlan[]
 }
 
-model VerificationToken {
-    identifier String
-    token      String   @unique
-    expires    DateTime
+enum UserStatus {
+    BELUM_MENIKAH @map("Belum Menikah")
+    MENIKAH       @map("Menikah")
+    CERAI         @map("Cerai")
+}
 
-    @@unique([identifier, token])
+model FinancialInfo {
+    id String @id @default(cuid())
+
+    latestUserTotalIncome  Int @default(0)
+    latestUserTotalExpense Int @default(0)
+
+    updated_at DateTime @updatedAt
+
+    userId String @unique
+    user   User   @relation("UserFinancialInfo", fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model UserFinancialAccount {
+    id String @id @default(cuid())
+
+    latestTotalIncome  Int
+    latestTotalExpense Int
+
+    updated_at DateTime @updatedAt
+
+    transactions UserFinancialTransactions[]
+
+    userId String
+    user   User   @relation("UserFinancialAccount", fields: [userId], references: [id])
+
+    providerId   String
+    providerName String
+}
+
+model UserFinancialTransactions {
+    id String @id @default(cuid())
+
+    nominal         Int
+    type            TransactionType
+    transactionDate DateTime        @default(now())
+
+    accountId String
+    account   UserFinancialAccount @relation(fields: [accountId], references: [id])
+}
+
+enum TransactionType {
+    PEMASUKAN
+    PENGELUARAN
+}
+
+// Bank / Provider side
+model UserProviderAccount {
+    id String @id @default(cuid())
+
+    updated_at DateTime @updatedAt
+
+    transactions UserProviderTransactions[]
+
+    userId String
+
+    providerId String
+    provider   FinancialServiceProvider @relation(fields: [providerId], references: [id])
+}
+
+model UserProviderTransactions {
+    id String @id @default(cuid())
+
+    nominal         Int
+    type            TransactionType
+    transactionDate DateTime        @default(now())
+
+    accountId String
+    account   UserProviderAccount @relation(fields: [accountId], references: [id])
+}
+
+model FinancialServiceProvider {
+    id   String @id @default(cuid())
+    name String @unique
+
+    accounts UserProviderAccount[]
+}
+
+model PersonalInfo {
+    id          String      @id @default(cuid())
+    status      UserStatus?
+    phoneNumber String?
+    birthDate   DateTime?
+    addressLine String?
+    city        String?
+    country     String?
+    zipCode     String?
+    notes       String?
+    job         String?
+    company     String?
+
+    userId String @unique
+    user   User   @relation("UserPersonalInfo", fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model PersonalIncome {
+    id             String @id @default(cuid())
+    salary         Int    @default(0)
+    bonus          Int    @default(0)
+    commission     Int    @default(0)
+    interestIncome Int    @default(0)
+    dividends      Int    @default(0)
+    otherIncome    Int    @default(0)
+
+    salaryMonths         Int @default(1)
+    bonusMonths          Int @default(1)
+    commissionMonths     Int @default(1)
+    interestIncomeMonths Int @default(1)
+    dividendsMonths      Int @default(1)
+    otherIncomeMonths    Int @default(1)
+
+    userId String @unique
+    user   User   @relation("UserPersonalIncome", fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model PersonalExpense {
+    id              String @id @default(cuid())
+    mortgage        Int    @default(0)
+    property        Int    @default(0)
+    electricity     Int    @default(0)
+    waterSewerTrash Int    @default(0)
+    transport       Int    @default(0)
+    phone           Int    @default(0)
+    internet        Int    @default(0)
+    home            Int    @default(0)
+    personal        Int    @default(0)
+    insurance       Int    @default(0)
+    entertainment   Int    @default(0)
+    subscriptions   Int    @default(0)
+    investment      Int    @default(0)
+
+    mortgageMonths        Int @default(1)
+    propertyMonths        Int @default(1)
+    electricityMonths     Int @default(1)
+    waterSewerTrashMonths Int @default(1)
+    transportMonths       Int @default(1)
+    phoneMonths           Int @default(1)
+    internetMonths        Int @default(1)
+    homeMonths            Int @default(1)
+    personalMonths        Int @default(1)
+    insuranceMonths       Int @default(1)
+    entertainmentMonths   Int @default(1)
+    subscriptionsMonths   Int @default(1)
+    investmentMonths      Int @default(1)
+
+    userId String @unique
+    user   User   @relation("UserPersonalExpense", fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Hospital {
+    id         String       @id @default(cuid())
+    name       String
+    location   String
+    benefits   Benefit[]
+    healthPlan HealthPlan[]
+}
+
+model Benefit {
+    id         String      @id @default(cuid())
+    type       BenefitType
+    hospital   Hospital    @relation(fields: [hospitalId], references: [id])
+    hospitalId String
+}
+
+enum BenefitType {
+    RAWAT_INAP
+    RAWAT_JALAN
+    BERSALIN
+    KESEHATAN_GIGI
+}
+
+enum ProgramType {
+    DOCTER_FEE
+    ROOM_FEE
+    OPERATION_FEE
+    DISEASE_FEE
+    DISABILITY_FEE
+    COMPENSATION_FEE
+}
+
+model Program {
+    id      String      @id @default(cuid())
+    program ProgramType
+
+    isChecked Boolean @default(false)
+    need      Decimal @default(0)
+    own       Decimal @default(0)
+
+    healthPlanId String
+    healthPlan   HealthPlan @relation(fields: [healthPlanId], references: [id])
+
+    @@unique([healthPlanId, program])
+}
+
+model HealthPlan {
+    id         String    @id @default(cuid())
+    user       User      @relation(fields: [userId], references: [id])
+    userId     String
+    hospital   Hospital  @relation(fields: [hospitalId], references: [id])
+    hospitalId String
+    Programs   Program[]
+
+    @@unique([userId, hospitalId])
+}
+
+model EducationPlan {
+    id            String   @id @default(cuid())
+    childName     String
+    birthDate     DateTime
+    fundAllocated Int      @default(0)
+
+    parentId String
+    parent   User   @relation(fields: [parentId], references: [id])
+
+    educationStages EducationStage[]
+}
+
+enum SchoolType {
+    NEGERI @map("Negeri")
+    SWASTA @map("Swasta")
+}
+
+model EducationStage {
+    id                  String     @id @default(cuid())
+    stageName           String
+    schoolType          SchoolType @default(NEGERI)
+    childAge            Int
+    period              Int        @default(1)
+    costBeforeInflation Int        @default(0)
+    inflationRate       Int        @default(0)
+
+    childId String
+    child   EducationPlan @relation(fields: [childId], references: [id])
 }

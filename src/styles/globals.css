@@ -4,8 +4,53 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif,
+  --font-sans:
+    var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-rubik: var(--font-rubik);
+
+  --text-title: 2.5rem;
+  --text-title--line-height: 3.5rem;
+  --text-title--font-weight: 500;
+
+  --text-h1: 2rem;
+  --text-h1--line-height: 2.5rem;
+  --text-h1--font-weight: 700;
+  --text-h2: 1.5rem;
+  --text-h2--line-height: 2rem;
+  --text-h2--font-weight: 700;
+  --text-h3: 1.25rem;
+  --text-h3--line-height: 1.75rem;
+  --text-h3--font-weight: 700;
+  --text-h4: 1.125rem;
+  --text-h4--line-height: 1.625rem;
+  --text-h4--font-weight: 700;
+  --text-h5: 1rem;
+  --text-h5--line-height: 1.5rem;
+  --text-h5--font-weight: 700;
+
+  --text-b1: 1rem;
+  --text-b1--line-height: 1.5rem;
+  --text-b1--font-weight: 400;
+  --text-b2: 0.875rem;
+  --text-b2--line-height: 1.25rem;
+  --text-b2--font-weight: 400;
+  --text-b3: 0.75rem;
+  --text-b3--line-height: 1.25rem;
+  --text-b3--font-weight: 400;
+
+  --text-btn1: 1.125rem;
+  --text-btn1--line-height: 1.5rem;
+  --text-btn1--font-weight: 500;
+  --text-btn2: 1rem;
+  --text-btn2--line-height: 1.5rem;
+  --text-btn2--font-weight: 500;
+  --text-btn3: 0.875rem;
+  --text-btn3--line-height: 1.25rem;
+  --text-btn3--font-weight: 500;
+
+  --color-blacknavy: #3a3f63;
+  --color-whitenavy: #6a74a5;
 }
 
 @theme inline {
@@ -122,4 +167,14 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.no-spinner[type="number"] {
+  -moz-appearance: textfield;
 }
