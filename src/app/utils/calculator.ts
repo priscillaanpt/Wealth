@@ -4,45 +4,62 @@ export interface RetireFundType {
   ageRetire: number;
   ageDeath: number;
 }
+
 interface RetireFundsType {
-  currentAge: number;
   ageRetire: number;
+  ageNow: number;
   ageDeath: number;
-  incomeMonthlyRetirement: number;
+  monthlyIncome: number;
   inflationBeforeRetire: number;
   inflationAfterRetire: number;
-  rate: number;
+  interestRate: number;
+  saving: number;
+  monthlyInvest: number;
+  incomeGrowth: number;
+  inheritance: number;
 }
+
 export function calculateRetireFund({
-  currentAge,
   ageRetire,
+  ageNow,
   ageDeath,
-  incomeMonthlyRetirement,
+  monthlyIncome,
   inflationBeforeRetire,
   inflationAfterRetire,
-  rate,
+  interestRate,
+  saving,
+  monthlyInvest,
+  incomeGrowth,
+  inheritance,
 }: RetireFundsType) {
-  console.log("INCOME OLD", incomeMonthlyRetirement);
-  const yearsToRetire = ageRetire - currentAge;
+  const yearsToRetire = ageRetire - ageNow;
   const retirementYears = ageDeath - ageRetire;
 
-  const incomeMonthlyRetirementFV =
-    incomeMonthlyRetirement *
-    Math.pow(1 + inflationBeforeRetire, yearsToRetire);
-  const realRateRetirement = (1 + rate) / (1 + inflationAfterRetire) - 1;
-  console.log("REAL RATE RETIREMENT :", realRateRetirement);
+  const monthlyRetireIncome =
+    monthlyIncome * Math.pow(1 + inflationBeforeRetire, yearsToRetire);
+  const realRateRetire = (1 + interestRate) / (1 + inflationAfterRetire) - 1;
   const pv_factor =
-    (1 - Math.pow(1 + realRateRetirement, -1 * retirementYears)) /
-    realRateRetirement;
+    (1 - Math.pow(1 + realRateRetire, -1 * retirementYears)) / realRateRetire;
 
-  const totalFund = incomeMonthlyRetirementFV * 12 * pv_factor;
-  console.log("YEARS TO RETIRE :", yearsToRetire);
-  console.log("RETIREMENT YEARS :", retirementYears);
-  console.log("INCOME MONTHLY RETIREMENT FV :", incomeMonthlyRetirementFV);
-  console.log("REAL RATE RETIREMENT :", realRateRetirement);
-  console.log("PV FACTORE :", pv_factor);
-  console.log("TOTAL FUND :", totalFund);
-  return totalFund;
+  const totalRetireFund = monthlyRetireIncome * 12 * pv_factor;
+
+  const fv_saving = saving * Math.pow(1 + interestRate, yearsToRetire);
+
+  let fv_investment_monthly = 0;
+  for (let i = 1; i <= yearsToRetire; i++) {
+    const investmentYearI =
+      monthlyInvest * 12 * Math.pow(1 + incomeGrowth, i - 1);
+    const fvYearI =
+      investmentYearI * Math.pow(1 + interestRate, yearsToRetire - i);
+    fv_investment_monthly += fvYearI;
+  }
+
+  const fv_inheritance =
+    inheritance * Math.pow(1 + interestRate, yearsToRetire);
+
+  const total = fv_saving + fv_investment_monthly + fv_inheritance;
+
+  return [totalRetireFund, total];
 }
 
 interface FamilyFundsType {
@@ -70,13 +87,22 @@ export function calculateFamilyFund({
   retireFund,
   lifeInsurance,
 }: FamilyFundsType) {
-  const incomePV = incomeYearly * (1 - Math.pow(1 + inflation, -1 * yearsToProvide)) / inflation;
-  const incomeSpousePV = incomeSpouseYearly * (1 - Math.pow(1 + inflation, -1 * yearsToWork)) / inflation;
+  const incomePV =
+    (incomeYearly * (1 - Math.pow(1 + inflation, -1 * yearsToProvide))) /
+    inflation;
+  console.log(
+    `INCOME PV = ${incomeYearly} * ${(1 - Math.pow(1 + inflation, -1 * yearsToProvide)) / inflation}`,
+  );
+  console.log("INCOME PV :", incomePV);
+  const incomeSpousePV =
+    (incomeSpouseYearly * (1 - Math.pow(1 + inflation, -1 * yearsToWork))) /
+    inflation;
 
   const total = costHome + debt + incomePV - incomeSpousePV;
   const assetAvailable = saving + retireFund + lifeInsurance;
 
   const totalLifeInsuranceNeeded = total - assetAvailable;
+  console.log("TOTAL LIFE INSURANCE :", totalLifeInsuranceNeeded);
   if (totalLifeInsuranceNeeded > 0) return totalLifeInsuranceNeeded;
   return 0;
 }
