@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import React from "react";
 import Image from "next/image";
@@ -13,7 +13,7 @@ interface OauthButtonProps {
 
 const OauthButton = ({ provider, iconSrc, text }: OauthButtonProps) => {
   const onClickSignIn = async () => {
-    await signIn(provider, {
+    await signIn(provider,{
       redirectTo: "/info/personal",
     });
   };

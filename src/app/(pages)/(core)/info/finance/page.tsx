@@ -7,7 +7,7 @@ import type {
   ExpenseMonthData,
   IncomeFieldData,
   IncomeMonthData,
-} from "~/app/types/finance-type";
+} from "./finance-type";
 import FinanceDisplay from "./finance-display";
 import { api } from "~/trpc/react";
 import {
@@ -91,19 +91,19 @@ export default function Page() {
 
   const updateIncome = api.user.updatePersonalncome.useMutation({
     onSuccess: () => {
-      setShowDialog(true);
+      setShowDialog(true)
     },
     onError: (e) => {
-      console.error(e.message);
+      console.error(e.message)
     },
   });
 
   const updateExpense = api.user.updatePersonalExpense.useMutation({
     onSuccess: () => {
-      setShowDialog(true);
+      setShowDialog(true)
     },
     onError: (e) => {
-      console.error(e.message);
+      console.error(e.message)
     },
   });
 
@@ -156,7 +156,7 @@ export default function Page() {
       setExpenseData(baseExpense as ExpenseFieldData);
       setExpenseMonth(expenseMonths as ExpenseMonthData);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [incomeInfo, expenseInfo]);
 
   return (

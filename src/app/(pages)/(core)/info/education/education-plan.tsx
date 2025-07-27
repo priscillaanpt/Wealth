@@ -51,7 +51,7 @@ const EducationPlan = () => {
     <>
       <EducationTotalBanner totalCost={childrenInfo?.totalCost ?? 0} />
 
-      <div className="rounded-lg bg-white py-6">
+      <div className="bg-white py-6 rounded-lg">
         <Select value={currentChildId} onValueChange={setCurrentChildId}>
           <SelectTrigger className="text-h5 text-blacknavy font-rubik w-full border-0 font-bold">
             <SelectValue placeholder="Child's Education Plan" className="" />
@@ -127,6 +127,7 @@ const EducationPlan = () => {
           </DialogContent>
         </Dialog>
       </div>
+
     </>
   );
 };

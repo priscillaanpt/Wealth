@@ -1,5 +1,5 @@
-import OauthButton from "./components/oauth-button";
-import SignInForm from "./components/signinForm";
+import SignInForm from "~/app/_components/signin/signinForm";
+import OauthButton from "~/components/auth/signIn/oauth-button";
 
 export default async function SignIn(props: {
   searchParams?: Promise<{

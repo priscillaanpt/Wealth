@@ -10,7 +10,6 @@ export function parseCurrency(value: string | number) {
 }
 
 export function parseRate(value: string | number) {
-  const num =
-    typeof value === "string" ? value.replace(/[^\d.]/g, "") : value.toString();
+  const num = typeof value === "string" ? value.replace(/[^\d.]/g, "") : value.toString();
   return `${num} %`;
 }

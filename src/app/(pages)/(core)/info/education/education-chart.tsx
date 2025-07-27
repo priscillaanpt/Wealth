@@ -8,6 +8,44 @@ import {
 } from "~/components/ui/chart";
 import { cn, formatToRupiah } from "~/lib/utils";
 
+// const chartData = [
+//   {
+//     stageName: "Pra-TK",
+//     parentAge: 32,
+//     childAge: 3,
+//     cost: 5000,
+//     fundAllocated: 5000,
+//   },
+//   {
+//     stageName: "TK",
+//     parentAge: 33,
+//     childAge: 4,
+//     cost: 6000,
+//     fundAllocated: 6000,
+//   },
+//   {
+//     stageName: "SD",
+//     parentAge: 35,
+//     childAge: 6,
+//     cost: 10000,
+//     fundAllocated: 4000,
+//   },
+//   {
+//     stageName: "SMP",
+//     parentAge: 41,
+//     childAge: 12,
+//     cost: 10000,
+//     fundAllocated: 0,
+//   },
+//   {
+//     stageName: "SMA",
+//     parentAge: 47,
+//     childAge: 18,
+//     cost: 20000,
+//     fundAllocated: 0,
+//   },
+// ];
+
 const chartConfig = {
   cost: {
     label: "BIAYA PENDIDIKAN ANAK",

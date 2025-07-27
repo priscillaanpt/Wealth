@@ -98,14 +98,10 @@ export const authConfig = {
       try {
         const userId = user.id;
         if (!userId) {
-          throw new Error("User id undefined");
+          throw new Error("User id undefined")
         }
 
         await db.personalInfo.create({
-          data: { userId },
-        });
-
-        await db.financialInfo.create({
           data: { userId },
         });
 
@@ -116,7 +112,8 @@ export const authConfig = {
         await db.personalExpense.create({
           data: { userId },
         });
-      } catch (err) {
+      }
+      catch (err) {
         console.error("Error creating profile for user:", err);
       }
     },

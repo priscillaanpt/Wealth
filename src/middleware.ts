@@ -6,14 +6,20 @@ const publicRoutes: string[] = ["/"];
 const unauthenticatedRoutes: string[] = ["/signin", "/signup"];
 
 export async function middleware(req: NextRequest) {
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const allCookies = req.cookies.getAll();
+
+  console.log("Cookies:");
+  allCookies.forEach(({ name, value }) => {
+    console.log(`${name}: ${value}`);
+  });
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET, secureCookie: true });
   const requestedPath = req.nextUrl.pathname;
 
-  console.log(`Token: ${token?.email}`);
-  console.log(`Requested url: ${requestedPath}`);
+  console.log(`Token: ${token?.email}`)
+  console.log(`Requested url: ${requestedPath}`)
 
-  if (requestedPath == "/") {
-    return NextResponse.redirect(new URL("/dashboard", req.url));
+  if(requestedPath == "/"){
+    return NextResponse.redirect(new URL("/dashboard",req.url))
   }
 
   if (token) {
@@ -36,5 +42,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/signin", "/signup", "/info/:path*", "/dashboard"],
+  matcher: ["/","/signin", "/signup", "/info", "/dashboard"],
 };

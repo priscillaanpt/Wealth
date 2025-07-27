@@ -1,6 +1,6 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
-import NavbarAuth from "./components/navbar-auth";
+import NavbarAuth from "~/app/_components/layout/navbar-auth";
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
   return (

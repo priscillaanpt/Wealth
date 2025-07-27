@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
-import Navbar from "~/components/layout/navbar";
-import AppSidebar from "~/components/layout/sidebar";
+import Navbar from "~/app/_components/layout/navbar";
 import { SidebarProvider } from "~/components/ui/sidebar";
+import AppSidebar from "../../_components/layout/sidebar";
 
 export default function CoreLayout({ children }: { children: ReactNode }) {
   return (

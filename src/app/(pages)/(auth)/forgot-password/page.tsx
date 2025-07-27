@@ -2,8 +2,8 @@
 import { CheckCircleIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import ForgetForm from "~/app/_components/forgot-password/forget-form";
 import { Button } from "~/components/ui/button";
-import ForgetForm from "./components/forget-form";
 
 export default function ForgotPassword() {
   const [fixedEmail, setFixedEmail] = useState<string | null>(null);

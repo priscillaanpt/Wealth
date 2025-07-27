@@ -1,8 +1,8 @@
 "use client";
 import Image from "next/image";
+import { Button } from "../ui/button";
 import { cn } from "~/lib/utils";
 import { useRouter } from "next/navigation";
-import { Button } from "~/components/ui/button";
 
 interface SidebarInfoProps {
   src: string;

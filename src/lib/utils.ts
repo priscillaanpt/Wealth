@@ -12,9 +12,7 @@ export function formatToRupiah(value: string) {
   const [integerPart, decimalPart] = normalized.split(".");
   if (!integerPart) return "0";
 
-  const formattedInt = new Intl.NumberFormat("id-ID").format(
-    Number(integerPart),
-  );
+  const formattedInt = new Intl.NumberFormat("id-ID").format(Number(integerPart));
 
   if (decimalPart !== undefined && decimalPart.length > 0) {
     return `${formattedInt},${decimalPart}`;

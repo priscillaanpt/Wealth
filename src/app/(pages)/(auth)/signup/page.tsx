@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import OauthButton from "../signin/components/oauth-button";
-import CheckEmailNotice from "./components/checkEmailNotice";
-import SignUpForm from "./components/signupForm";
+import CheckEmailNotice from "~/app/_components/signup/checkEmailNotice";
+import SignUpForm from "~/app/_components/signup/signupForm";
+import OauthButton from "~/components/auth/signIn/oauth-button";
 
 const SignUp = () => {
   const [emailFixed, setEmailFixed] = useState<string | null>(null);

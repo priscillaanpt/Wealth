@@ -101,7 +101,7 @@ export default function EducationForm({
         stages: childInfo.educationStages ?? [],
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [childInfo]);
 
   return (

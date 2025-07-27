@@ -11,6 +11,19 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+const chartData = [
+  {
+    name: "Dana Sekarang",
+    value: 404_250_000,
+    fill: "#00D0B5",
+  },
+  {
+    name: "Target Dana",
+    value: 782_436_000.06,
+    fill: "#4458FE",
+  },
+];
+
 // Format number to IDR with comma and decimals
 const formatToIDR = (value: number) =>
   new Intl.NumberFormat("id-ID", {
@@ -19,26 +32,7 @@ const formatToIDR = (value: number) =>
     minimumFractionDigits: 2,
   }).format(value);
 
-interface RetirementChartProps {
-  saving: number;
-  target: number;
-}
-export default function RetirementChart({
-  saving,
-  target,
-}: RetirementChartProps) {
-  const chartData = [
-    {
-      name: "Dana Sekarang",
-      value: saving,
-      fill: "#00D0B5",
-    },
-    {
-      name: "Target Dana",
-      value: target,
-      fill: "#4458FE",
-    },
-  ];
+export default function RetirementChart() {
   return (
     <div className="rounded-xl bg-white p-6">
       <ResponsiveContainer width="100%" height={300}>

@@ -12,8 +12,8 @@ import { TableCell, TableRow } from "~/components/ui/table";
 
 function camelCaseToWords(input: string): string {
   return input
-    .replace(/([A-Z])/g, " $1")
-    .replace(/^./, (str) => str.toUpperCase());
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/^./, str => str.toUpperCase());
 }
 
 interface AccordionInputProps {
@@ -37,23 +37,25 @@ export default function AccordionInput({
         {camelCaseToWords(name)}
       </TableCell>
       <TableCell className="m-0 flex items-center justify-end border-r-2 border-[#DAE0F2] p-0 pr-2">
-        <p>Rp</p>
+        <p>
+          Rp
+        </p>
         <Input
           type="text"
           inputMode="numeric"
           value={dataValue}
           onChange={(e) => onDataChange(Number(e.target.value))}
-          className="no-spinner text-b1 m-0 w-auto border-0 px-2 text-right shadow-none focus:border-0 focus:ring-0 focus-visible:border-none focus-visible:ring-0"
+          className="no-spinner w-auto text-b1 m-0 border-0 px-2 text-right shadow-none focus:border-0 focus:ring-0 focus-visible:border-none focus-visible:ring-0"
         />
       </TableCell>
-      <TableCell className="m-0 flex items-center border-r-2 border-[#DAE0F2] p-0">
+      <TableCell className="m-0 flex items-center p-0 border-r-2 border-[#DAE0F2]">
         <Select
           value={monthValue.toString()}
           onValueChange={(e) => {
-            onMonthChange(Number(e));
-          }}
+            onMonthChange(Number(e))}
+          }
         >
-          <SelectTrigger className="mx-auto w-3/4">
+          <SelectTrigger className="w-3/4 mx-auto">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>

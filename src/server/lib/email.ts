@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -18,7 +19,7 @@ export const sendEmail = async (
     const params = new URLSearchParams();
     params.set("token", token);
     if (redirect_url) params.set("redirect_url", redirect_url);
-    console.log(params);
+    console.log(params)
     url = `${process.env.NEXT_PUBLIC_APP_URL}/verify-email?${params.toString()}`;
   } else {
     url = `${process.env.NEXT_PUBLIC_APP_URL}/reset-password?token=${token}`;

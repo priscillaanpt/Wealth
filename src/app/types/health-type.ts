@@ -1,5 +1,16 @@
-import type z from "zod";
-import type { programSchema } from "../schemas/health-schema";
-
-export type ProgramSchema = z.infer<typeof programSchema>;
-export type ProgramTypeName = keyof ProgramSchema;
+export type TransformedPrograms =
+  | ({
+      HelthPlan: {
+        need: number;
+        own: number;
+      }[];
+      programType: {
+        name: string;
+        id: string;
+      };
+    } & {
+      id: string;
+      hospitalId: string;
+      programTypeId: string;
+    }[])
+  | undefined;

@@ -1,6 +1,7 @@
 "use client";
 import { useForm } from "react-hook-form";
 import { type z } from "zod";
+import { signinSchema } from "~/app/schemas/auth-schema";
 import {
   Form,
   FormControl,
@@ -18,7 +19,6 @@ import { useRouter } from "next/navigation";
 import { CircleAlertIcon } from "lucide-react";
 import { useState } from "react";
 import LoadingSpinner from "~/components/trivial/LoadingSpinner";
-import { signinSchema } from "~/app/schemas/auth-schema";
 
 interface SignInFormProps {
   error: string;

@@ -1,4 +1,4 @@
-import InfoForm from "./components/info-form";
+import InfoForm from "~/app/_components/info/info-form";
 
 export default function Info() {
   return (

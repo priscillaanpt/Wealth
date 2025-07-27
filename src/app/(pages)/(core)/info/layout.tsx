@@ -3,8 +3,8 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, type ReactNode } from "react";
+import SidebarInfo from "~/components/info/sidebar-info";
 import { Button } from "~/components/ui/button";
-import SidebarInfo from "./components/sidebar-info";
 
 export default function InfoLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname().split("/")[2] ?? "personal";
